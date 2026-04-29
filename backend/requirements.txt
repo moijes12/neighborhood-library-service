@@ -1,0 +1,17 @@
+# Django
+Django
+
+# For postgres
+psycopg[binary]
+
+# Django rest framework (lets switch to grpc later)
+djangorestframework
+markdown       
+django-filter
+
+# Testing
+pytest
+
+# Formatting and pre-commit config
+ruff
+pre-commit
