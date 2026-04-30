@@ -1,11 +1,10 @@
-from .grpc_serializers import BookProtoSerializer
-from django_socio_grpc import GenericService
+from django_socio_grpc.generics import ModelService
 from .models import Book
+from .grpc_serializers import BookProtoSerializer
 
-class BookService(GenericService):
+class BookService(ModelService):
     """
-    gRPC service for Book Operations.
+    gRPC Service for Book operations (CRUD)
     """
-    queryset = Book.objects.all()
+    queryset = Book.objects.all().order_by('-created_at')
     serializer_class = BookProtoSerializer
-    pass

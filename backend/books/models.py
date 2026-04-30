@@ -18,9 +18,9 @@ class Book(models.Model):
 
     def mark_as_unavailable(self):
         self.is_available = False
-        self.save()
+        
     
     def mark_as_available(self):
         self.is_available = True
-        self.save()
+        
         
