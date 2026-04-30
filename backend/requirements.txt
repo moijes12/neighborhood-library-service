@@ -1,16 +1,19 @@
 # Django
 Django
+djangorestframework
+markdown
+django-filter
 
 # For postgres
-psycopg
+psycopg[binary]
 
 # Grpc
-grpcio
-grpcio-tools
-django-socio-grpc
+# grpcio
+# grpcio-tools
+# django-socio-grpc
 
 # For env
-python-dotenv
+# python-dotenv
 
 # Testing
 pytest

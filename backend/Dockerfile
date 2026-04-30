@@ -12,6 +12,3 @@ RUN apt-get update && rm -rf /var/lib/apt/lists/*
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-
-# For testing grpc 
-RUN apt install --no-install-recommends --no-cache -y grpcurl
