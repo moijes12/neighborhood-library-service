@@ -2,12 +2,15 @@
 Django
 
 # For postgres
-psycopg[binary]
+psycopg
 
-# Django rest framework (lets switch to grpc later)
-djangorestframework
-markdown       
-django-filter
+# Grpc
+grpcio
+grpcio-tools
+django-socio-grpc
+
+# For env
+python-dotenv
 
 # Testing
 pytest
