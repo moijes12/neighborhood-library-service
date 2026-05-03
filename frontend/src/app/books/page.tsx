@@ -1,6 +1,6 @@
 // src/app/books/page.tsx
 import { Book } from '@/types/books';
-import { Container, Grid, Item, Box, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
+import { Container, Grid, Box, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
 import Link from 'next/link';
 
 
