@@ -31,6 +31,10 @@ services:
     depends_on:
       - backend
     command: ["tail", "-f", "/dev/null"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
     network_mode: "service:backend"
 
 volumes:

@@ -7,6 +7,9 @@ django-filter
 # For postgres
 psycopg[binary]
 
+# CORS Headers
+django-cors-headers
+
 # Grpc
 # grpcio
 # grpcio-tools
@@ -17,6 +20,13 @@ psycopg[binary]
 
 # Testing
 pytest
+
+# For Image support
+pillow
+
+# For development
+## For fetching data from gutendex and pre-poulating the Books data to the database
+requests
 
 # Formatting and pre-commit config
 ruff

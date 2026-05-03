@@ -6,10 +6,10 @@ class Book(models.Model):
     """
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
-    isbn = models.CharField(max_length=13, unique=True, blank=True, null=True)
+    description = models.TextField(blank=True, help_text="A brief summary of the book")
+    image = models.ImageField(upload_to='book_covers/', null=True, blank=True)
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-created_at"]
