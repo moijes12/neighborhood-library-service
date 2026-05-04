@@ -1,11 +1,11 @@
-// src/app/books/page.tsx
+'use client'
 import { Book } from '@/types/books';
 import { Container, Grid, Box, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
 import Link from 'next/link';
 
 
 async function getBooks(): Promise<Book[]> {
-  const res = await fetch('http://localhost:8000/api/books/', { cache: 'no-store' });
+  const res = await fetch('http://localhost:8000/books/', { cache: 'no-store' });
   if (!res.ok) throw new Error('Failed to fetch books');
   return res.json();
 }

@@ -1,6 +1,13 @@
 FROM node:25
 
 WORKDIR /app
-COPY . .    
+COPY package*.json .
 
-CMD [""]
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the code
+COPY . .
+
+# Run the application
+CMD ["npm", "run", "dev"]

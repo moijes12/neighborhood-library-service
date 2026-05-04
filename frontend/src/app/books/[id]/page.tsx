@@ -6,7 +6,7 @@ import { Book } from '@/types/books';
 
 
 async function getBook(id: string): Promise<Book> {
-  const res = await fetch(`http://localhost:8000/api/books/${id}/`, { cache: 'no-store' });
+  const res = await fetch(`http://localhost:8000/books/${id}/`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Book not found');
   return res.json();
 }
