@@ -1,9 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router';
-import './index.css'
+// import './index.css'
 // import App from './App.tsx'
-import BookList from './components/books/BookList.tsx';
+import BookList from './pages/BookList.tsx';
 import BookDetail from './components/books/BookDetail.tsx';
 import SignIn from './components/users/SignIn';
 
