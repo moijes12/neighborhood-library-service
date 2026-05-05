@@ -2,7 +2,8 @@ import { useParams } from 'react-router';
 import { api } from '../../services/api';
 import { type Book } from '../../types/book';
 import {
-  Container, Typography, Box, Card, CardContent, CardMedia
+  Container, Typography, Box, Card, CardContent, CardMedia,
+  Chip
 } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 
@@ -38,18 +39,20 @@ export default function BookDetail() {
           alt={book.title}
         />
         <CardContent>
-          <Typography variant="h4" component="h1" gutterBottom>
+          <Typography variant="h3" component="h1" gutterBottom>
             {book.title}
           </Typography>
           <Typography variant="h6" color="textSecondary" gutterBottom>
             by {book.author}
           </Typography>
-          <Typography variant="h3" component="p">
+          <Typography component="p">
             {book.description}
           </Typography>
           <Box sx={{ mt: 2 }}>
             <Typography variant="subtitle1">
-              Status: {book.is_available ? 'Available' : 'Checked Out'}
+              Status: {book.is_available ? 
+              <Chip label="Available" color="success" /> :
+              <Chip label="Not Available" color="error" />  }
             </Typography>
           </Box>
         </CardContent>

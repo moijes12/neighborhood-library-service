@@ -10,6 +10,7 @@ class Command(BaseCommand):
         # Gutendex URL - you can add filters like ?languages=en
         url = "https://gutendex.com/books/"
         self.stdout.write(f"Fetching data from {url}...")
+        NUMBER_OF_BOOKS_TO_FETCH = 30
         
         response = requests.get(url)
         if response.status_code != 200:
@@ -18,6 +19,8 @@ class Command(BaseCommand):
 
         data = response.json()
         books_data = data.get('results', [])
+        if len(books_data) > NUMBER_OF_BOOKS_TO_FETCH:
+            books_data = books_data[:NUMBER_OF_BOOKS_TO_FETCH]
 
         for item in books_data:
             title = item.get('title')
@@ -27,13 +30,21 @@ class Command(BaseCommand):
             
             # Gutendex provides covers in the 'formats' dictionary
             image_url = item.get('formats', {}).get('image/jpeg')
+
+            description = item.get('summaries', [])
+            if description:
+                description = description[0]
+                startIndex = description.find("(This is an automatically generated summary.)")
+                description = description[:startIndex]
+            else:
+                description = "No description available."
             
             # Check if book already exists to avoid duplicates
             if not Book.objects.filter(title=title, author=author_name).exists():
                 book = Book(
                     title=title,
                     author=author_name,
-                    description=f"A Project Gutenberg ebook. ID: {item.get('id')}",
+                    description=description,
                     is_available=True
                 )
 
