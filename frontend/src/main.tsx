@@ -5,11 +5,13 @@ import './index.css'
 // import App from './App.tsx'
 import BookList from './components/books/BookList.tsx';
 import BookDetail from './components/books/BookDetail.tsx';
+import SignIn from './components/users/SignIn';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
+        <Route index element={<SignIn />} />
         <Route path="books">
           <Route index element={<BookList />} />
           <Route path=":id" element={<BookDetail/>} />

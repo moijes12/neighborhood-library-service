@@ -1,3 +1,4 @@
+
 # Django
 Django
 djangorestframework
@@ -9,6 +10,9 @@ psycopg[binary]
 
 # CORS Headers
 django-cors-headers
+
+# JWT
+djangorestframework-simplejwt
 
 # Grpc
 # grpcio

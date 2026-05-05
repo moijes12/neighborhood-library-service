@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Project apps
     "books.apps.BooksConfig",
+    "member.apps.MemberConfig",
     # Django Rest Framework
     "rest_framework",
+    "rest_framework_simplejwt",
     # CORS Headers
     "corsheaders",
 ]
@@ -135,3 +137,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "backend"]
+
+# Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}

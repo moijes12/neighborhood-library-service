@@ -19,13 +19,19 @@ from django.urls import include, path
 from rest_framework import routers
 
 from books import views as books_views
+from member import views as member_views
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView)
 
 router = routers.DefaultRouter()
 router.register(r"books", books_views.BookViewSet)
+router.register(r"member",  member_views.MemberViewSet)
+
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("api/", include(router.urls)),
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
