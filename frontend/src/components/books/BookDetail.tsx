@@ -1,9 +1,9 @@
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { api } from '../../services/api';
 import { type Book } from '../../types/book';
 import {
   Container, Typography, Box, Card, CardContent, CardMedia,
-  Chip
+  Chip, Button
 } from '@mui/material';
 import { useEffect, useState, Suspense } from 'react';
 
@@ -11,6 +11,13 @@ import { useEffect, useState, Suspense } from 'react';
 export default function BookDetail() {
   const { id } = useParams();
   const [book, setBook] = useState<Book | null>(null);
+  const navigate = useNavigate();
+  let user_access_token:string|null = null;
+
+  const is_user_authenticated = localStorage.access_token !== undefined;
+  if (is_user_authenticated) {
+    user_access_token = localStorage.access_token;
+  }
 
   useEffect(() => {
     api.get(`/books/${id}/`)
@@ -29,6 +36,23 @@ export default function BookDetail() {
   }, [id]);
 
 
+  function handleAction() {
+    const action = book?.is_borrowed_by_me ? 'return_book' : 'borrow';
+
+    api.post(`/books/${id}/${action}/`, {}, {headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` }})
+      .then(response => {
+        if (response.status !== 200) {
+          throw new Error(response.statusText);
+        }
+        return response.data;
+      }).then(data => {
+        console.log(data);
+      }).catch(err => {
+        console.log(err);
+      }).finally(() =>{
+        navigate(`/books/${id}/`);
+      });
+  }
 
   return (
     <Suspense fallback={<Typography variant="h6">Loading...</Typography>}>
@@ -56,6 +80,11 @@ export default function BookDetail() {
                 <Chip label="Available" color="success" /> :
                 <Chip label="Not Available" color="error" />  }
               </Typography>
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <Button variant="contained" color={book?.is_borrowed_by_me ? "secondary": "primary"} onClick={handleAction} >
+                {book?.is_borrowed_by_me ? "Return" : "Borrow"}
+              </Button>
             </Box>
           </CardContent>
         </Card>

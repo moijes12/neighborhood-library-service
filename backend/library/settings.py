@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Project apps
     "books.apps.BooksConfig",
     "member.apps.MemberConfig",
+    "borrowings.apps.BorrowingsConfig",
     # Django Rest Framework
     "rest_framework",
     "rest_framework_simplejwt",
