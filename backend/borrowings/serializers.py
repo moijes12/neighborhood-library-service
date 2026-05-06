@@ -1,16 +1,37 @@
 from rest_framework import serializers
-from books.models import Book
 from .models import Borrowing
+from django.contrib.auth.models import User
 
-class BookSerializer(serializers.ModelSerializer):
-    is_borrowed_by_me = serializers.SerializerMethodField()
+class BorrowingSerializer(serializers.ModelSerializer):
+    # Including book_title or username can be helpful for listing history
+    book_title = serializers.ReadOnlyField(source='book.title')
+    username = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
-        model = Book
-        fields = ["id", "author", "title", "description", "image", "is_available", "is_borrowed_by_me"]
-    
-    def get_is_borrowed_by_me(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return Borrowing.objects.filter(book=obj, user=request.user, return_date__isnull=True).first()
-        return False
+        model = Borrowing
+        fields = [
+            'id', 
+            'book', 
+            'book_title', 
+            'user', 
+            'username', 
+            'borrow_date', 
+            'return_date'
+        ]
+        read_only_fields = ['borrow_date', 'user']
+
+class MemberSerializer(serializers.ModelSerializer):
+    """
+    If you are building a profile page, this helps show 
+    all books currently borrowed by a specific user.
+    """
+    active_borrowings = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'active_borrowings']
+
+    def get_active_borrowings(self, obj):
+        # Returns only the books the user hasn't returned yet
+        borrowings = Borrowing.objects.filter(user=obj, return_date__isnull=True)
+        return BorrowingSerializer(borrowings, many=True).data

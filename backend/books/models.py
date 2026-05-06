@@ -19,10 +19,10 @@ class Book(models.Model):
     def __str__(self):
         return f"{self.title} by {self.author}"
     
-    def mark_as_available(self):
-        self.is_available = True
-        self.save()
+    # def mark_as_available(self):
+    #     self.is_available = True
+    #     self.save()
     
-    def mark_as_unavailable(self):
-        self.is_available = False
-        self.save()
+    # def mark_as_unavailable(self):
+    #     self.is_available = False
+    #     self.save()

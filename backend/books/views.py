@@ -1,48 +1,45 @@
-from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
-
-from .serializers import BookSerializer
-from .models import Book
-from borrowings.models import Borrowing
-from borrowings.serializers import BookSerializer as BorrowingBookSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.utils import timezone
+from books.models import Book
+from books.serializers import BookSerializer
+from borrowings.models import Borrowing
 
 class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all().order_by("-created_at")
-    serializer_class = BorrowingBookSerializer
-    authentication_classes = [JWTAuthentication] 
-    permission_classes = [IsAuthenticatedOrReadOnly] 
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes=[IsAuthenticatedOrReadOnly]
 
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=['post'])
     def borrow(self, request, pk=None):
         book = self.get_object()
-
         if not book.is_available:
-            return Response({"error": "Book unavailable"} , status=status.HTTP_400_BAD_REQUEST)
-    
+            return Response({"error": "Book not available"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create record and update availability
         Borrowing.objects.create(book=book, user=request.user)
         book.is_available = False
         book.save()
-        return Response({"error": "Book borrowed"} , status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+        # Return updated book data to frontend
+        serializer = self.get_serializer(book)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
     def return_book(self, request, pk=None):
         book = self.get_object()
-
-        # Check if the book has been borrowed
-        borrowing = Borrowing.objects.filter(book=book, user=request.user, return_date__isnull=True).first()
+        borrowing = Borrowing.objects.filter(book=book, user=request.user, returned_date__isnull=True).first()
+        
         if not borrowing:
-            return Response({"error": "No borrowing record found"}, status=status.HTTP_400_BAD_REQUEST)
-        borrowing.return_date = timezone.now()
+            return Response({"error": "No active borrowing record"}, status=status.HTTP_400_BAD_REQUEST)
+
+        borrowing.returned_date = timezone.now()
+        borrowing.save()
         book.is_available = True
         book.save()
-        return Response({"error": "Book returned"}, status=status.HTTP_200_OK)
-        
 
-
-        
-
+        # Return updated book data to frontend
+        serializer = self.get_serializer(book)
+        return Response(serializer.data)

@@ -3,7 +3,7 @@ import { AppProvider } from '@toolpad/core/AppProvider';
 import { SignInPage, type AuthProvider, type AuthProviderResponse } from '@toolpad/core/SignInPage';
 import { createTheme } from '@mui/material/styles';
 import { api } from '../../services/api';
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 
 interface TokenResponse {
   access: string;
@@ -15,6 +15,7 @@ const theme = createTheme();
 
 export default function SignIn() {
     const navigate = useNavigate();
+    const location = useLocation();
   const handleSignIn = async (
     provider: AuthProvider,
     formData: FormData
@@ -30,7 +31,8 @@ export default function SignIn() {
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
 
-      navigate('/books/'); // Redirect to the books page after successful login
+      const origin = location.state?.from || '/books/';
+      navigate(origin); // Redirect to the books page after successful login
 
       return { success: true };
     } catch (error) {
