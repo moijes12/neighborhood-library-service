@@ -17,10 +17,7 @@ export default function BookCard({ book }: { book: Book }) {
         alt={book.title}
         sx={{ objectFit: 'cover' }}
       />
-        <CardHeader
-          title={book.title}
-          subheader={book.author}
-        />
+      <CardHeader title={book.title} subheader={book.author} />
     </Card>
   );
 }

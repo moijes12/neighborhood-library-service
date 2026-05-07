@@ -1,10 +1,7 @@
 import libraryTheme from '../../theme';
 import { AxiosError } from 'axios';
 import { AppProvider } from '@toolpad/core/AppProvider';
-import {
-  SignInPage,
-  type AuthProvider,
-} from '@toolpad/core/SignInPage';
+import { SignInPage, type AuthProvider } from '@toolpad/core/SignInPage';
 import { api } from '../../services/api';
 import { useNavigate, useLocation } from 'react-router';
 
@@ -17,13 +14,11 @@ const providers: AuthProvider[] = [
   { id: 'credentials', name: 'Standard Account' },
 ];
 
-
 export default function SignIn() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleSignIn = async (_provider: AuthProvider, formData: FormData) => {
-    
     try {
       const response = await api.post<TokenResponse>('/login/', {
         username: formData.get('username') as string,
@@ -45,7 +40,7 @@ export default function SignIn() {
           axiosError.response?.data?.detail || 'Invalid username or password',
       };
     }
-}
+  };
 
   return (
     <AppProvider theme={libraryTheme}>
@@ -53,7 +48,12 @@ export default function SignIn() {
         signIn={handleSignIn}
         providers={providers}
         slotProps={{
-          emailField: { label: 'Username', name: 'username', autoFocus: true, placeholder: 'Username' },
+          emailField: {
+            label: 'Username',
+            name: 'username',
+            autoFocus: true,
+            placeholder: 'Username',
+          },
           passwordField: { label: 'Password', name: 'password' },
           form: { noValidate: true },
         }}
