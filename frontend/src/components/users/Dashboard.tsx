@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../../services/api";
 import { getAuthHeader } from "../../utils/authServices";
 import type { UserProfile } from "../../types/userProfile";
