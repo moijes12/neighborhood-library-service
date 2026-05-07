@@ -25,3 +25,13 @@ class Borrowing(models.Model):
             due_date = self.borrowed_date + timedelta(days=14)
             overdue_days = timezone.now() - due_date
         return overdue_days
+    
+    @property
+    def current_fine(self):
+        """Calculate $1 fine per day for overdue books."""
+        fine = 0
+        if self.returned_date:
+            # Lets keep fines only for borowed books and not for returned ones
+            return fine
+        return max(0, self.days_overdue)  # $1 per day overdue
+        

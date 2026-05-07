@@ -4,9 +4,10 @@ export interface Borrowing {
   book_title: string;
   is_overdue: boolean;
   borrowed_date: string;
+  fine: number;
 }
 
-export interface UserProfile {
-  username: string;
-  active_borrowings: Borrowing[];
-}
+// export interface UserProfile {
+//   username: string;
+//   active_borrowings: Borrowing[];
+// }

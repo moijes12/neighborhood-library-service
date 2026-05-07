@@ -10,6 +10,8 @@ class BorrowingSerializer(serializers.ModelSerializer):
     is_overdue = serializers.ReadOnlyField()
     days_overdue = serializers.ReadOnlyField()
 
+    fine = serializers.ReadOnlyField(source='current_fine')
+
     class Meta:
         model = Borrowing
         fields = [
@@ -21,7 +23,8 @@ class BorrowingSerializer(serializers.ModelSerializer):
             'borrowed_date', 
             'returned_date',
             'is_overdue',
-            'days_overdue'
+            'days_overdue',
+            'fine'
         ]
         # 'user' and 'borrow_date' are read_only because they are set automatically
         # 'is_overdue' and 'days_overdue' are properties, so they are read-only by nature

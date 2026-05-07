@@ -75,6 +75,15 @@ export default function Dashboard() {
       <Typography variant="h4" gutterBottom>
         Welcome, {profile?.username}
       </Typography>
+
+      {profile && profile.total_fines > 0 && (
+        <Chip
+          label={`Total Fine Due: $${profile.total_fines.toFixed(2)}`}
+          color="error"
+          variant="filled"
+          sx={{ fontWeight: 'bold', fontSize: '1.1rem', py: 2 }}
+        />
+      )}
       <Typography variant="h6" color="textSecondary" gutterBottom>
         Your Current Checkouts
       </Typography>
@@ -100,6 +109,15 @@ export default function Dashboard() {
                       size="small"
                       sx={{ mt: 1 }}
                     />
+                  )}
+                  {checkout.fine > 0 && (
+                    <Typography
+                      color="error"
+                      variant="body2"
+                      sx={{ mt: 1, fontWeight: 'bold' }}
+                    >
+                      Overdue Fine: ${checkout.fine}
+                    </Typography>
                   )}
                 </CardContent>
                 <CardActions>
