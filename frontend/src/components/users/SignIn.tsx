@@ -1,3 +1,4 @@
+import libraryTheme from '../../theme';
 import { AxiosError } from 'axios';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { SignInPage, type AuthProvider, type AuthProviderResponse } from '@toolpad/core/SignInPage';
@@ -44,7 +45,7 @@ export default function SignIn() {
   };
 
   return (
-    <AppProvider theme={theme}>
+    <AppProvider theme={libraryTheme}>
       <SignInPage
         signIn={handleSignIn}
         providers={providers}
