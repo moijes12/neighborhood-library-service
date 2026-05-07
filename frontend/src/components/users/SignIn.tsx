@@ -1,26 +1,28 @@
 import libraryTheme from '../../theme';
 import { AxiosError } from 'axios';
 import { AppProvider } from '@toolpad/core/AppProvider';
-import { SignInPage, type AuthProvider, type AuthProviderResponse } from '@toolpad/core/SignInPage';
-import { createTheme } from '@mui/material/styles';
+import {
+  SignInPage,
+  type AuthProvider,
+} from '@toolpad/core/SignInPage';
 import { api } from '../../services/api';
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from 'react-router';
 
 interface TokenResponse {
   access: string;
   refresh: string;
 }
 
-const providers: AuthProvider[] = [{ id: 'credentials', name: 'Standard Account' }];
-const theme = createTheme();
+const providers: AuthProvider[] = [
+  { id: 'credentials', name: 'Standard Account' },
+];
+
 
 export default function SignIn() {
-    const navigate = useNavigate();
-    const location = useLocation();
-  const handleSignIn = async (
-    provider: AuthProvider,
-    formData: FormData
-  ): Promise<AuthProviderResponse> => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSignIn = async (_provider: AuthProvider, formData: FormData) => {
     
     try {
       const response = await api.post<TokenResponse>('/login/', {
@@ -35,14 +37,15 @@ export default function SignIn() {
       const origin = location.state?.from || '/books/';
       navigate(origin); // Redirect to the books page after successful login
 
-      return { success: true };
+      return {};
     } catch (error) {
       const axiosError = error as AxiosError<{ detail?: string }>;
       return {
-        error: axiosError.response?.data?.detail || 'Invalid username or password',
+        error:
+          axiosError.response?.data?.detail || 'Invalid username or password',
       };
     }
-  };
+}
 
   return (
     <AppProvider theme={libraryTheme}>
@@ -50,7 +53,7 @@ export default function SignIn() {
         signIn={handleSignIn}
         providers={providers}
         slotProps={{
-          emailField: { label: 'Username', name: 'username', autoFocus: true },
+          emailField: { label: 'Username', name: 'username', autoFocus: true, placeholder: 'Username' },
           passwordField: { label: 'Password', name: 'password' },
           form: { noValidate: true },
         }}

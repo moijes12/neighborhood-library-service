@@ -2,15 +2,21 @@ import { useParams, useNavigate } from 'react-router';
 import { api } from '../../services/api';
 import { type Book } from '../../types/book';
 import {
-  Container, Typography, Box, Card, CardContent, CardMedia,
-  Chip, Button
+  Container,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  Button,
 } from '@mui/material';
 import { useEffect, useState, Suspense } from 'react';
 import { getAuthHeader } from '../../utils/authServices';
 
 // function getAuthHeader() {
 //   const token = localStorage.getItem('access_token');
-  
+
 //   // Only return the header if the token is a valid string
 //   if (token && token !== "undefined") {
 //     return { Authorization: `Bearer ${token}` };
@@ -26,25 +32,27 @@ export default function BookDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get(`/books/${id}/`, {
-      headers: getAuthHeader(),
-    })
-      .then(response => {
+    api
+      .get(`/books/${id}/`, {
+        headers: getAuthHeader(),
+      })
+      .then((response) => {
         if (response.status !== 200) {
-          throw new Error('Network response was not ok : ' + response.statusText);
+          throw new Error(
+            'Network response was not ok : ' + response.statusText
+          );
         }
         return response.data;
       })
-      .then(data => {
+      .then((data) => {
         setBook(data);
         setIsLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log('Error fetching book:', error);
         setIsLoading(false);
-      }); 
+      });
   }, [id]);
-
 
   function handleAction() {
     // If not logged in, redirect to sign-in page
@@ -56,18 +64,22 @@ export default function BookDetail() {
     const action = book?.is_borrowed_by_me ? 'return_book' : 'borrow';
     setIsLoading(true);
 
-    api.post(`/books/${id}/${action}/`, {}, {headers: getAuthHeader()})
-      .then(response => {
+    api
+      .post(`/books/${id}/${action}/`, {}, { headers: getAuthHeader() })
+      .then((response) => {
         if (response.status !== 200) {
           throw new Error(response.statusText);
         }
         return response.data;
-      }).then(data => {
+      })
+      .then((data) => {
         setBook(data);
         console.log(data);
-      }).catch(err => {
+      })
+      .catch((err) => {
         console.log(err);
-      }).finally(() =>{
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }
@@ -83,7 +95,9 @@ export default function BookDetail() {
   return (
     <Suspense fallback={<Typography variant="h6">Loading...</Typography>}>
       <Container maxWidth="md" sx={{ py: 4 }}>
-        <Card sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
+        <Card
+          sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}
+        >
           <CardMedia
             component="img"
             sx={{ width: { md: 300 }, height: 400, objectFit: 'cover' }}
@@ -120,26 +134,32 @@ export default function BookDetail() {
             <Typography variant="h6" color="textSecondary" gutterBottom>
               by {book?.author}
             </Typography>
-            <Typography component="p">
-              {book?.description}
-            </Typography>
+            <Typography component="p">{book?.description}</Typography>
 
             <Box sx={{ mt: 3 }}>
-                        {book?.is_borrowed_by_me ? (
-        <Button variant="contained" color="secondary" onClick={handleAction}>
-          Return Book
-        </Button>
-      ) : (
-        <Box>
-          {book?.is_available ? (
-            <Button variant="contained" color="primary" onClick={handleAction}>
-              Borrow Book
-            </Button>
-          ) : (
-            <Chip label="Unavailable" color="error" />
-          )}
-        </Box>
-      )}
+              {book?.is_borrowed_by_me ? (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleAction}
+                >
+                  Return Book
+                </Button>
+              ) : (
+                <Box>
+                  {book?.is_available ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleAction}
+                    >
+                      Borrow Book
+                    </Button>
+                  ) : (
+                    <Chip label="Unavailable" color="error" />
+                  )}
+                </Box>
+              )}
             </Box>
           </CardContent>
         </Card>

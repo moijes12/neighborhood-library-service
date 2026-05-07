@@ -19,7 +19,7 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     plugins: {
-      'react-refresh': reactRefresh,
+      // 'react-refresh': reactRefresh,
       'prettier': prettierPlugin,
     },
     languageOptions: {

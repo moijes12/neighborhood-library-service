@@ -1,50 +1,74 @@
 import { useState, useEffect } from 'react';
-import { Link } from "react-router";
+import { Link as RouterLink } from 'react-router';
 import { type Book } from '../types/book';
 import { api } from '../services/api';
-import { Container, Typography, Grid, CircularProgress } from '@mui/material';
-import { Suspense } from 'react';
+import {
+  Container,
+  Typography,
+  Grid,
+  CircularProgress,
+  Box,
+} from '@mui/material';
 import BookCard from '../components/books/BookCard';
-
 
 export default function BookList() {
   const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/books/')
-      .then(response => {
-        if (response.status !== 200) {
-          throw new Error('Network response was not ok : ' + response.statusText);
-        }
-        return response.data;
+    api
+      .get('/books/')
+      .then((response) => {
+        // if (response.status !== 200) {
+        //   throw new Error('Network response was not ok : ' + response.statusText);
+        // }
+        // return response.data;
+        setBooks(response.data);
+        setLoading(false);
       })
-      .then(data => {
-        setBooks(data);
-        // setLoading(false);
-      })
-      .catch(error => {
+      .catch((error) => {
         // setError('Failed to fetch books');
         // setLoading(false);
         console.log('Error fetching books:', error);
+        setLoading(false);
       });
   }, []);
 
-
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '50vh',
+        }}
+      >
+        <CircularProgress color="primary" />
+      </Box>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1">
+      <Typography variant="h4" color="primary" sx={{ mb: 4 }}>
         Library Books
       </Typography>
-      <Suspense fallback={<CircularProgress />}>
-        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {books.map((book) => (
-            <Link to={`/books/${book.id}`} key={book.id} style={{ textDecoration: 'none' }}>
-              <BookCard book={book} />
-            </Link>
-          ))}
-        </Grid>
-      </Suspense>
+
+      <Grid container spacing={3}>
+        {books.map((book) => (
+          <Grid
+            key={book.id}
+            sx={{ xs: 12, sm: 6, md: 3, textDecoration: 'none' }}
+            component={RouterLink}
+            to={`/books/${book.id}`}
+          >
+            {/* <RouterLink to={`/books/${book.id}`} style={{ textDecoration: 'none' }}> */}
+            <BookCard book={book} />
+            {/* </RouterLink> */}
+          </Grid>
+        ))}
+      </Grid>
     </Container>
   );
 }

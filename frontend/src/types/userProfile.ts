@@ -1,4 +1,4 @@
-import type { Borrowing } from "./borrowing";
+import type { Borrowing } from './borrowing';
 
 export interface UserProfile {
   username: string;
