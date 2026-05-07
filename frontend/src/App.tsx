@@ -2,6 +2,7 @@ import {BrowserRouter, Route, Routes} from "react-router";
 import SignIn from "./components/users/SignIn"
 import BookDetail from "./components/books/BookDetail"
 import BookList from "./pages/BookList"
+import Dashboard from "./components/users/Dashboard";
 
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
               <Route index element={<BookList />} />
               <Route path=":id" element={<BookDetail/>} />
             </Route>
+            <Route path="dashboard" element={<Dashboard />} />
           </Routes>
         </BrowserRouter>
   );

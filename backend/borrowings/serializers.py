@@ -1,37 +1,28 @@
 from rest_framework import serializers
 from .models import Borrowing
-from django.contrib.auth.models import User
 
 class BorrowingSerializer(serializers.ModelSerializer):
-    # Including book_title or username can be helpful for listing history
+    # These ReadOnlyFields pull data from the related Book and User models
     book_title = serializers.ReadOnlyField(source='book.title')
     username = serializers.ReadOnlyField(source='user.username')
+    
+    # These pull directly from the @property methods we added to the Borrowing model
+    is_overdue = serializers.ReadOnlyField()
+    days_overdue = serializers.ReadOnlyField()
 
     class Meta:
         model = Borrowing
         fields = [
             'id', 
-            'book', 
-            'book_title', 
+            'book',        # The Book ID (useful for API actions)
+            'book_title',  # The Book Title (useful for UI display)
             'user', 
             'username', 
-            'borrow_date', 
-            'return_date'
+            'borrowed_date', 
+            'returned_date',
+            'is_overdue',
+            'days_overdue'
         ]
-        read_only_fields = ['borrow_date', 'user']
-
-class MemberSerializer(serializers.ModelSerializer):
-    """
-    If you are building a profile page, this helps show 
-    all books currently borrowed by a specific user.
-    """
-    active_borrowings = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'active_borrowings']
-
-    def get_active_borrowings(self, obj):
-        # Returns only the books the user hasn't returned yet
-        borrowings = Borrowing.objects.filter(user=obj, return_date__isnull=True)
-        return BorrowingSerializer(borrowings, many=True).data
+        # 'user' and 'borrow_date' are read_only because they are set automatically
+        # 'is_overdue' and 'days_overdue' are properties, so they are read-only by nature
+        read_only_fields = ['borrowed_date', 'user']

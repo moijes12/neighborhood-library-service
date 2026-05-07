@@ -20,13 +20,15 @@ from rest_framework import routers
 
 from books import views as books_views
 from member import views as member_views
+from borrowings import views as borrowing_views
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView)
 
 router = routers.DefaultRouter()
-router.register(r"books", books_views.BookViewSet)
-router.register(r"member",  member_views.MemberViewSet)
+router.register(r"books", books_views.BookViewSet, basename="books")
+router.register(r"member",  member_views.MemberViewSet, basename="member")
+router.register(r"borrowings",  borrowing_views.BorrowingViewSet, basename="borrowings")
 
 
 urlpatterns = [

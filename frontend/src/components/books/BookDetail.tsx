@@ -6,16 +6,17 @@ import {
   Chip, Button
 } from '@mui/material';
 import { useEffect, useState, Suspense } from 'react';
+import { getAuthHeader } from '../../utils/authServices';
 
-function getAuthHeader() {
-  const token = localStorage.getItem('access_token');
+// function getAuthHeader() {
+//   const token = localStorage.getItem('access_token');
   
-  // Only return the header if the token is a valid string
-  if (token && token !== "undefined") {
-    return { Authorization: `Bearer ${token}` };
-  }
-  return {}; // Return empty object for guests
-}
+//   // Only return the header if the token is a valid string
+//   if (token && token !== "undefined") {
+//     return { Authorization: `Bearer ${token}` };
+//   }
+//   return {}; // Return empty object for guests
+// }
 
 export default function BookDetail() {
   const { id } = useParams();
