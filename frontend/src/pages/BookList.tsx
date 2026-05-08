@@ -49,6 +49,12 @@ export default function BookList() {
     );
   }
 
+  if (books.length === 0) {
+    return <Typography variant="h6" color="textSecondary">
+      The library is currently being stocked with books. Please check back later!
+    </Typography>;
+  }
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Typography variant="h4" color="primary" sx={{ mb: 4 }}>

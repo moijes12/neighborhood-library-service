@@ -3,45 +3,60 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-      provenance: false
       no_cache: true
+    container_name: library_backend
     depends_on:
       db:
         condition: service_healthy
-    command: ["tail", "-f", "/dev/null"]
+    environment:
+      - DEBUG=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/books/"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 1m    # Wait for books to be fetched
     volumes:
       - ./backend:/app
-    network_mode: "host"
+      - media:/app/media
+    ports:
+      - "8000:8000"
 
   db:
-    image: postgres:latest
+    image: postgres:18
+    container_name: library_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=library_db
+      - PGDATA=/var/lib/postgresql/data/pgdata
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d library_db"]
       interval: 1m30s
       timeout: 30s
       retries: 5
       start_period: 30s
-    network_mode: "host"
+    ports:
+      - "5432:5432"
   
-  # frontend:
-  #   build: 
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #     provenance: false
-  #     no_cache: true
-  #   depends_on:
-  #     - backend
-  #   command: ["tail", "-f", "/dev/null"]
-  #   volumes:
-  #     - ./frontend:/app
-  #     - /app/node_modules
-  #   network_mode: "host"
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+      no_cache: true
+    container_name: library_front_end
+    depends_on:
+      backend:
+        condition: service_healthy
+    command: ["npm", "run", "dev", "--", "--host"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
 
 volumes:
   postgres_data:
+  media:

@@ -7,6 +7,7 @@ from .models import Book
 
 class BookSerializer(serializers.ModelSerializer):
     is_borrowed_by_me = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Book
@@ -41,3 +42,6 @@ class BookSerializer(serializers.ModelSerializer):
             )
             return result
         return False
+
+    def get_image(self, obj):
+        return obj.image.url if obj.image else None

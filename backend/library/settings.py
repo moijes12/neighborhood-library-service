@@ -86,7 +86,7 @@ WSGI_APPLICATION = "library.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": "localhost",
+        "HOST": "db",
         "USER": "postgres",
         "NAME": "library_db",
         "PASSWORD": "postgres",
@@ -135,9 +135,9 @@ STATIC_URL = "static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://frontend:5173"]
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "backend"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "backend", "frontend", "db"]
 
 # Rest Framework
 REST_FRAMEWORK = {
