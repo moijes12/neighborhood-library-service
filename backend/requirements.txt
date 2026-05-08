@@ -24,6 +24,9 @@ djangorestframework-simplejwt
 
 # Testing
 pytest
+pytest-django
+pytest-cov
+factory-boy
 
 # For Image support
 pillow
