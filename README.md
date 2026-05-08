@@ -44,12 +44,12 @@ This application allows neighbors to browse a shared collection of books, manage
 
 ### 🚀 Quick Start with Docker
 1. Clone the repository
-2 . Run `docker-compose up --build`
+2. Run `docker-compose up --build`
 3. Log in to the admin panel at `http://localhost:8000/admin/` with:
    - Username: `admin`
    - Password: `password`
 4. Add a new user for the library
-3. Access the frontend at `http://localhost:5173` and sign in with the new user credentials.
+5. Access the frontend at `http://localhost:5173` and sign in with the new user credentials.
 
 The system will automatically:
 - Start the PostgreSQL database.
